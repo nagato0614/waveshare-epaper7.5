@@ -812,7 +812,7 @@ void Paint_DrawTime(UWORD Xstart, UWORD Ystart, PAINT_TIME *pTime, sFONT* Font,
 {
     uint8_t value[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
-    UWORD Dx = Font->Width;
+    UWORD Dx = Font->Width + 1;
 
     //Write data into the cache
     Paint_DrawChar(Xstart                           , Ystart, value[pTime->Hour / 10], Font, Color_Background, Color_Foreground);

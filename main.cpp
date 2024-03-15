@@ -43,7 +43,7 @@ int EPD_7in5_V2_test(void)
     Paint_Clear(WHITE);
     GUI_ReadBmp("../pic/800x480.bmp", 0, 0);
     EPD_7IN5_V2_Display(BlackImage);
-    DEV_Delay_ms(2000);
+    DEV_Delay_ms(10000);
 
     printf("show bmp------------------------\r\n");
     Paint_SelectImage(BlackImage);
@@ -160,10 +160,103 @@ void  Handler(int signo)
     exit(0);
 }
 
+int print_usagi()
+{
+    printf("show usagi.....\n");
+
+    if(DEV_Module_Init()!=0){
+        return -1;
+    }
+
+    EPD_7IN5_V2_Init();
+    struct timespec start={0,0}, finish={0,0}; 
+    clock_gettime(CLOCK_REALTIME,&start);
+    EPD_7IN5_V2_Clear();
+    clock_gettime(CLOCK_REALTIME,&finish);
+    printf("%ld S\r\n",finish.tv_sec-start.tv_sec);
+    DEV_Delay_ms(500);
+
+    //Create a new image cache
+    UBYTE *BlackImage;
+    /* you have to edit the startup_stm32fxxx.s file and set a big enough heap size */
+    UWORD Imagesize = ((EPD_7IN5_V2_WIDTH % 8 == 0)? (EPD_7IN5_V2_WIDTH / 8 ): (EPD_7IN5_V2_WIDTH / 8 + 1)) * EPD_7IN5_V2_HEIGHT;
+    if((BlackImage = (UBYTE *)malloc(Imagesize)) == NULL) {
+        printf("Failed to apply for black memory...\r\n");
+        return -1;
+    }
+    printf("Paint_NewImage\r\n");
+    Paint_NewImage(BlackImage, EPD_7IN5_V2_WIDTH, EPD_7IN5_V2_HEIGHT, 0, WHITE);
+
+    printf("show window BMP-----------------\r\n");
+    Paint_SelectImage(BlackImage);
+    Paint_Clear(WHITE);
+    GUI_ReadBmp("../picture/0.bmp", 0, 0);
+    EPD_7IN5_V2_Display(BlackImage);
+    DEV_Delay_ms(1000);
+
+    Paint_SelectImage(BlackImage);
+    Paint_Clear(WHITE);
+    GUI_ReadBmp("../picture/1.bmp", 0, 0);
+    EPD_7IN5_V2_Display(BlackImage);
+    DEV_Delay_ms(1000);
+
+    Paint_SelectImage(BlackImage);
+    Paint_Clear(WHITE);
+    GUI_ReadBmp("../picture/2.bmp", 0, 0);
+    EPD_7IN5_V2_Display(BlackImage);
+    DEV_Delay_ms(1000);
+
+    printf("finish printing\n");
+    return 0;
+}
+
+int print_time()
+{
+    if(DEV_Module_Init()!=0){
+        return -1;
+    }
+
+    EPD_7IN5_V2_Init();
+    struct timespec start={0,0}, finish={0,0}; 
+    clock_gettime(CLOCK_REALTIME,&start);
+    EPD_7IN5_V2_Clear();
+    clock_gettime(CLOCK_REALTIME,&finish);
+    printf("%ld S\r\n",finish.tv_sec-start.tv_sec);
+    DEV_Delay_ms(500);
+
+    //Create a new image cache
+    UBYTE *BlackImage;
+    /* you have to edit the startup_stm32fxxx.s file and set a big enough heap size */
+    UWORD Imagesize = ((EPD_7IN5_V2_WIDTH % 8 == 0)? (EPD_7IN5_V2_WIDTH / 8 ): (EPD_7IN5_V2_WIDTH / 8 + 1)) * EPD_7IN5_V2_HEIGHT;
+    if((BlackImage = (UBYTE *)malloc(Imagesize)) == NULL) {
+        printf("Failed to apply for black memory...\r\n");
+        return -1;
+    }
+    printf("Paint_NewImage\r\n");
+    Paint_NewImage(BlackImage, EPD_7IN5_V2_WIDTH, EPD_7IN5_V2_HEIGHT, 0, WHITE);
+
+
+    // 2.Drawing on the image
+    printf("Drawing:BlackImage\r\n");
+    PAINT_TIME time;
+    time.Year = 2024;
+    time.Day = 15;
+    time.Hour = 20;
+    time.Min = 54;
+    time.Sec = 36;
+    Paint_Clear(WHITE);
+    Paint_DrawTime(0, 0, &time, &Font24, WHITE, BLACK);
+
+    printf("EPD_Display\r\n");
+    EPD_7IN5_V2_Display(BlackImage);
+    DEV_Delay_ms(2000);
+}
+
+
 int main(void)
 {
     // Exception handling:ctrl + c
     signal(SIGINT, Handler);
-    EPD_7in5_V2_test();
+    print_usagi();
     return 0;
 }

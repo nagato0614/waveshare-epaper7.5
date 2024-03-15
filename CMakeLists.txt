@@ -9,8 +9,6 @@ file(GLOB FONTS_SOURCES lib/Config/*.c)
 file(GLOB CONFIG_SOURCES lib/Fonts/*.c)
 file(GLOB EPAPER_SOURCES lib/e-Paper/*.c)
 
-add_definitions(-DRPI)
-
 add_executable(epaper
   ${EPAPER_SOURCES}
   ${GUI_SOURCES}
@@ -35,12 +33,13 @@ endif()
 
 add_definitions(-D${USELIB_RPI} -DRPI)
 
-target_include_directories(epaper PRIVATE
+target_include_directories(epaper PUBLIC
   lib/GUI
   lib/Config
   lib/Fonts
   lib/e-Paper
   lib/Examples
+  lib/nagato
 )
 
 target_link_libraries(epaper

@@ -78,23 +78,23 @@ UBYTE GUI_ReadBmp(const char *path, UWORD Xstart, UWORD Ystart)
     UWORD Bmp_Width_Byte = (Image_Width_Byte % 4 == 0) ? Image_Width_Byte: ((Image_Width_Byte / 4 + 1) * 4);
     UBYTE Image[Image_Width_Byte * bmpInfoHeader.biHeight];
     memset(Image, 0xFF, Image_Width_Byte * bmpInfoHeader.biHeight);
+    printf("finish read img\n");
 
     // Determine if it is a monochrome bitmap
     int readbyte = bmpInfoHeader.biBitCount;
     if(readbyte != 1) {
-        Debug("the bmp Image is not a monochrome bitmap!\n");
+        printf("the bmp Image is not a monochrome bitmap!\n");
         exit(0);
     }
+
 
     // Determine black and white based on the palette
     UWORD i;
     UWORD Bcolor, Wcolor;
     UWORD bmprgbquadsize = pow(2, bmpInfoHeader.biBitCount);// 2^1 = 2
     BMPRGBQUAD bmprgbquad[bmprgbquadsize];        //palette
-    // BMPRGBQUAD bmprgbquad[2];        //palette
 
     for(i = 0; i < bmprgbquadsize; i++){
-    // for(i = 0; i < 2; i++) {
         fread(&bmprgbquad[i], sizeof(BMPRGBQUAD), 1, fp);
     }
     if(bmprgbquad[0].rgbBlue == 0xff && bmprgbquad[0].rgbGreen == 0xff && bmprgbquad[0].rgbRed == 0xff) {
@@ -105,6 +105,7 @@ UBYTE GUI_ReadBmp(const char *path, UWORD Xstart, UWORD Ystart)
         Wcolor = BLACK;
     }
 
+    printf("read file\n");
     // Read image data into the cache
     UWORD x, y;
     UBYTE Rdata;
@@ -122,6 +123,7 @@ UBYTE GUI_ReadBmp(const char *path, UWORD Xstart, UWORD Ystart)
         }
     }
     fclose(fp);
+    printf("start printing\n");
 
     // Refresh the image to the display buffer based on the displayed orientation
     UBYTE color, temp;
