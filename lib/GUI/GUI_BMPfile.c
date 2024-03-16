@@ -148,6 +148,7 @@ UBYTE GUI_ReadBmp_onCenter(const char *path)
             Paint_SetPixel(Xstart + x, Ystart + y, color);
         }
     }
+    printf("finish printing\n");
     return 0;
 }
 

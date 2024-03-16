@@ -8,11 +8,11 @@
 #include "weather.hpp"
 
 #include <iostream>
+#include <random>
 #include <signal.h>  //signal()
 #include <stdlib.h>  //exit()
 #include <stdlib.h>  // malloc() free()
 #include <time.h>
-#include <random>
 
 int EPD_7in5_V2_test(void)
 {
