@@ -1,0 +1,65 @@
+Language:        Cpp
+# ROS2はGoogleのC++スタイルを基本としつつ、いくつか独自の調整を行います。
+BasedOnStyle:  Google
+
+# インデント設定
+IndentWidth:     2
+TabWidth:        2
+UseTab:          Never
+
+# ブレースのスタイル
+# ROS2では関数のブレースは次の行に置くことを推奨しますが、制御構造（if, forなど）は同じ行に置きます。
+BreakBeforeBraces: Allman
+BraceWrapping:
+  AfterClass:      false
+  AfterControlStatement: false
+  AfterEnum:       false
+  AfterFunction:   true
+  AfterNamespace:  false
+  AfterStruct:     false
+  AfterUnion:      false
+  BeforeCatch:     false
+  BeforeElse:      false
+  IndentBraces:    false
+
+# スペースとコンマの後にスペースを入れる
+SpaceAfterCStyleCast: true
+SpacesInParentheses: false
+SpaceBeforeParens: ControlStatements
+
+# 列の制限
+# ROS2では120文字を超える行は避けるべきですが、
+# ここでは適切な自動フォーマットを容易にするために少し長めに設定します。
+ColumnLimit:     120
+
+# ポインタと参照のアスタリスク(*)とアンパサンド(&)の配置
+PointerAlignment: Left
+
+# ヘッダーのインクルード順序を制御する
+IncludeCategories:
+  - Regex:           '^<(vector|string|map|set|list|queue|stack|bitset|algorithm|functional|numeric|memory)>'
+    Priority:        2
+  - Regex:           '^(<|"(gtest|gmock|eigen3|boost|ros|ros2))/'
+    Priority:        3
+  - Regex:           '".*"'
+    Priority:        4
+  - Regex:           '.*'
+    Priority:        5
+IncludeBlocks:   Regroup
+SortIncludes:    true
+
+# テンプレートの尖括弧'> >'ではなく'>>'を使用する
+SpacesInAngles:  false
+
+# ラムダ式のキャプチャリストの後のスペース
+SpaceBeforeCpp11BracedList: true
+
+# 列挙型を一行に収めない
+AllowShortEnumsOnASingleLine: false
+AllowShortBlocksOnASingleLine: false
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+
+# 関数宣言と定義での一貫性を強制
+AlwaysBreakAfterReturnType: None
