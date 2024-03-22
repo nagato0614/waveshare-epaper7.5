@@ -3,5 +3,5 @@ build/
 .idea/
 
 scripts/video/
-
+scripts/images/
 .DS_Store
