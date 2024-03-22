@@ -3,25 +3,31 @@ project(e-paper)
 
 set(CMAKE_C_STANDARD 17)
 set(CMAKE_CXX_STANDARD 20)
+
+
+
+
+
 set(DIR_GUI ./lib)
 file(GLOB GUI_SOURCES lib/GUI/*.c)
 file(GLOB FONTS_SOURCES lib/Config/*.c)
 file(GLOB CONFIG_SOURCES lib/Fonts/*.c)
 file(GLOB EPAPER_SOURCES lib/e-Paper/*.c)
-
-add_definitions(-DRPI)
+file(GLOB NAGATO_SOURCES lib/nagato/*.cpp)
 
 add_executable(epaper
   ${EPAPER_SOURCES}
   ${GUI_SOURCES}
   ${FONTS_SOURCES}
   ${CONFIG_SOURCES}
+  ${CONFIG_SOURCES}
+  ${NAGATO_SOURCES}
   main.cpp
 )
 
 set(USELIB_RPI USE_LGPIO_LIB)
 
-set(LIB_RPI -Wl,--gc-sections)
+set(LIB_RPI -Wl,--gc-sections -lcurl)
 
 if(USELIB_RPI STREQUAL USE_BCM2835_LIB)
     list(APPEND LIB_RPI -lbcm2835)
@@ -35,12 +41,14 @@ endif()
 
 add_definitions(-D${USELIB_RPI} -DRPI)
 
-target_include_directories(epaper PRIVATE
+target_include_directories(epaper PUBLIC
   lib/GUI
   lib/Config
   lib/Fonts
   lib/e-Paper
   lib/Examples
+  lib/nagato
+  lib/json/include
 )
 
 target_link_libraries(epaper
